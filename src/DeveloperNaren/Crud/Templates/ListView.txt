@@ -1,0 +1,25 @@
+@extends('layouts.admin')
+
+@section('content')
+        <!--Begin Datatables-->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box">
+            <header>
+                <div class="icons">
+                    <i class="fa fa-table"></i>
+                </div>
+                <h5>Product List</h5>
+            </header>
+            <div id="collapse4" class="body">
+                <table id="dataTable" class="table table-bordered table-condensed table-hover table-striped">
+                    %%TableContent%%
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+
+
+@stop

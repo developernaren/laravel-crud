@@ -1,0 +1,25 @@
+@extends('layouts.admin')
+@section('content')
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box">
+                <header>
+                    <div class="icons">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </div>
+                    <h5>Add Product</h5>
+                </header>
+                <div id="collapse3" class="body">
+                    {!! Form::open(  ['url' => $route, 'class' => 'form-horizontal row-fluid' ] ) !!}
+                      %%AddFormContent%%
+                        <div class="form-actions">
+                            <input type="submit" value="Save" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div><!-- /.row -->
+@stop
