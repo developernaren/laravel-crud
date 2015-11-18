@@ -1,6 +1,6 @@
 <?php
 
-namespace %%RootNamespace%%\Requests;
+namespace %%Namespace%%\Requests;
 
 use App\Http\Requests\Request;
 

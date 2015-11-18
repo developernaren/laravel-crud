@@ -27,7 +27,7 @@ class CreateViewCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create Controller';
+    protected $description = 'Create View';
 
     function handle() {
 

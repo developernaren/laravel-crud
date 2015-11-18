@@ -14,7 +14,7 @@ class CrudCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'crud:whole {entity} {fieldsString}';
+    protected $signature = 'crud:whole';
 
     /**
      * The console command description.
@@ -32,8 +32,9 @@ class CrudCommand extends Command
 
     function handle() {
 
-        $entity = $this->argument( "entity" );
-        $fieldsString = $this->argument( "fieldsString" );
+
+        $entity = $this->ask( "What entity are you trying to create crud for?" );
+        $fieldsString = $this->ask( "Fields string: in format <field>:<type> separated by comma(,)" );
 
 
         $this->call( 'crud:controller',  [ 'entity' => $entity ]  );

@@ -5,81 +5,76 @@ namespace DeveloperNaren\Crud\Writers;
 
 class View extends Writer
 {
-
-
-
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'crud:view';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create View';
-
     protected $tableContent;
 
     protected $addFormContent;
 
+    protected $fieldArr;
 
 
 
-    function handle() {
-
-        $this->renderContent( 'table' );
-
-        $this->info( $this->tableContent );
-
-    }
+    function __construct( $entity, $fieldsString ) {
 
 
-    function renderContent() {
+
+        $allFields = explode(',', $fieldsString );
+        $allFieldArr = [];
+
+        foreach( $allFields as $field ) {
+
+            $thisFieldArr =  explode(':', $field );
+            list($name, $type) = $thisFieldArr;
+            $allFieldArr[ trim($name)] = trim( $type );
+        }
+
+        //echo json_encode( $allFieldArr );
+
+        $this->fieldArr = $allFieldArr;
+
+        $this->setModelName( $entity );
+        $this->setTableName( $entity );
+        $this->setModelVar();
 
         $this->renderTableBody();
+        $this->renderViewInputs();
+
 
     }
-
-
 
     function renderTableBody() {
 
 
-        $content = '<thead>';
+        $content = '<thead>' . PHP_EOL;
 
-        $content .= '<tr>';
+        $content .= '<tr>' . PHP_EOL;
 
         foreach( $this->fieldArr as $fieldName =>  $value ) {
-            $content .= '<th> '. $fieldName .'</th>';
+            $content .= '<th> '. $fieldName .'</th>' .PHP_EOL;
         }
 
         $content .= '</tr>' . PHP_EOL;
 
-        $content .= "<thead>";
+        $content .= "<thead>" . PHP_EOL;
 
-        $content .= "<tbody>";
+        $content .= "<tbody>" . PHP_EOL;
 
-
-
-
-        $content .= '@foreach( $'. str_plural( $this->modelVar )  .' as $'. $this->modelVar.')';
+        $content .= '@foreach( '. str_plural( $this->modelVar )  .' as '. $this->modelVar.')' . PHP_EOL;
 
         foreach( $this->fieldArr as $fieldName =>  $value ) {
 
-            $content .= '<td>{!! $'. $fieldName .' !!}</td>';
+            $content .= '<td>{!! '.$this->modelVar.'->'. $fieldName .' !!}</td>' . PHP_EOL;
         }
 
-        $content .= '@endforeach';
+        $content .= '@endforeach' . PHP_EOL;
 
-        $content .= "</tbody>";
+        $content .= "</tbody>" . PHP_EOL;
 
         $this->tableContent = $content;
 
-
+        $target = 'resources/views/' . str_slug( $this->modelName ) ."/list.blade.php" ;
+        $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/ListView.txt';
+        $contentKeyArr = get_object_vars( $this );
+        $this->write( $template, $contentKeyArr , $target );
 
     }
 
@@ -129,72 +124,65 @@ class View extends Writer
             }
         }
 
-        $target = 'resources/views/' . $this->modelVar ."/create.blade.php" ;
-
+        $target = 'resources/views/' . str_slug( $this->modelName ) ."/create.blade.php" ;
         $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/CreateView.txt';
-
         $contentKeyArr = get_object_vars( $this );
         $this->write( $template, $contentKeyArr , $target );
 
     }
 
+    function renderInput( $label, $name ) {
 
-    function renderList() {
+                $this->addFormContent .= '<div class="form-group">
+                            <label class="control-label col-lg-4">'. $label .'</label>
+                            <div class="col-lg-8">
+                                <input type="text" rows="5" class="form-control"
+                                          name="' . $name. '" value="{!! $'. $name .' !!}">
+                                <span class="help-inline text-danger">{{ $errors->first("'. $name .'") }}</span>
+                            </div>
+                        </div>';
 
-        foreach( $this->fieldArr as $fieldName =>  $type ) {
-
-            switch( trim( $type ) ) {
-
-                case "str":
-                case "string":
-                    $this->renderInput( studly_case( $fieldName ), $fieldName) ;
-                    break;
-                case "int":
-                case "integer":
-                    $this->renderInput( 'integer', $fieldName );
-                    break;
-                case "txt":
-                case "text":
-                    $this->renderInput( 'text', $fieldName );
-                    break;
-                case "bool":
-                case "boolean":
-                    $this->renderInput( 'boolean', $fieldName );
-                    break;
-                case "dec":
-                case "decimal":
-                    $this->renderInput( 'decimal', $fieldName );
-                    break;
-                case "fl":
-                case "float":
-                    $this->renderInput( 'float', $fieldName );
-                    break;
-                case "date":
-                    $this->renderInput( 'date', $fieldName );
-                    break;
-                case "datetime":
-                case "dttime":
-                    $this->renderInput( 'datetime', $fieldName );
-                    break;
-                case "time":
-                    $this->renderInput( 'time', $fieldName );
-                    break;
 
             }
+
+
+    function renderTextArea( $label, $name ) {
+
+            $this->addFormContent .= '<div class="form-group">
+                            <label class="control-label col-lg-4">'. $label .'</label>
+                            <div class="col-lg-8">
+                                <textarea rows="5" class="form-control"
+                                          name="' . $name. '">{!! $'. $name .' !!}</textarea>
+                                <span class="help-inline text-danger">{{ $errors->first("'. $name .'") }}</span>
+                            </div>
+                        </div>';
+
+
         }
 
-        $target = 'resources/views/' . $this->modelVar ."/create.blade.php" ;
+
+    function renderRadio(  $label, $name ) {
+
+            $this->addFormContent .= '<div class="form-group">
+                        <label class="control-label col-lg-4">{!! '. $label .'!!}</label>
+                        <div class="col-lg-8">
+                          <div class="checkbox">
+                            <label>
+                              <div class="radio"><span class="checked"><input type="radio" checked="" value="option1" name="'. $name.'" class="uniform"></span></div>Checked radio
+                            </label>
+                          </div><!-- /.checkbox -->
+                          <div class="checkbox">
+                            <label>
+                              <div class="radio"><span><input type="radio" value="option2" name="'. $name.'" class="uniform"></span></div>Unchecked radio
+                            </label>
+                          </div><!-- /.checkbox -->
+
+                        </div>
+                      </div>';
+
+        }
 
 
-
-        $contentKeyArr = [ 'AddFormContent' => $this->addFormContent ];
-
-        $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/CreateView.txt';
-
-        $this->write( $template, $contentKeyArr , $target );
-
-
-    }
 
 
 }

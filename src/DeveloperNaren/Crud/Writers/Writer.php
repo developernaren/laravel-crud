@@ -40,9 +40,10 @@ class Writer
         $allFieldArr = [];
 
         foreach( $allFields as $field ) {
-            list($name, $type) = explode(':', $field );
-            $allFieldArr[ trim($name)] = trim( $type );
 
+            $thisFieldArr =  explode(':', $field );
+            list($name, $type) = $thisFieldArr;
+            $allFieldArr[ trim($name)] = trim( $type );
         }
 
         $this->fieldArr = $allFieldArr;
@@ -52,7 +53,7 @@ class Writer
 
     function setTableName( $entity ) {
 
-        $this->tableName = snake_case( camel_case( $entity ));
+        $this->tableName = str_plural( snake_case( camel_case( $entity )) );
     }
 
     function write( $file, $contentKeyArr, $target ) {
@@ -138,7 +139,7 @@ class Writer
 
 
     public function setModelVar() {
-        $this->modelVar = '$' . Str::camel( $this->crudName );
+        $this->modelVar = '$' . Str::camel( $this->modelName );
     }
 
 

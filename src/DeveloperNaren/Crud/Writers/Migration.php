@@ -1,25 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: narendra
- * Date: 11/17/15
- * Time: 10:56 PM
- */
 
 namespace DeveloperNaren\Crud\Writers;
 
-
 class Migration extends Writer{
 
+    protected $migrationContent;
 
-    private $table;
-    private $migrationContent;
 
-    function __constructor( $entity, $fieldString ) {
 
-        $this->parseFields( $fieldString );
+
+    function __construct( $entity, $fieldString ) {
+
         $this->setTableName( $entity );
         $this->setModelName( $entity);
+        $this->parseFields( $fieldString );
         $this->makeMigration();
 
     }
@@ -32,10 +26,11 @@ class Migration extends Writer{
         foreach( $this->fieldArr as $fieldName => $type ) {
 
             $this->writeFields( $type, $fieldName );
+
         }
 
         $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/Migration.txt';
-        $target = 'database/migrations/'. date( "Y_m_d_") . time() . '_create_' .$this->table . '_table.php';
+        $target = 'database/migrations/'. date( "Y_m_d_") . time() . '_create_' .$this->tableName . '_table.php';
 
         $contentArr = get_object_vars( $this );
         $this->write( $template, $contentArr, $target );

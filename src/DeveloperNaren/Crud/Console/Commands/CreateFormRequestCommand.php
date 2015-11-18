@@ -2,6 +2,7 @@
 
 namespace DeveloperNaren\Crud\Console\Commands;
 
+use DeveloperNaren\Crud\Writers\Request;
 
 class CreateFormRequestCommand extends CrudCommand
 {
@@ -18,7 +19,7 @@ class CreateFormRequestCommand extends CrudCommand
         $entity = $this->argument( 'entity' );
         $fieldsString = $this->argument( 'fieldsString' );
 
-        new Model( $entity, $fieldsString );
+        new Request( $entity, $fieldsString );
 
     }
 

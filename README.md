@@ -1,12 +1,18 @@
 # laravel-crud
 Crud Operations for Laravel
-Just Starting this, thought would be a nice feature in laravel.
-I am open for suggestions
 
-#still a work in progress DO NOT use this just yet
+```
+$ php artisan crud:whole
+
+```
+
+This command asks two questions
 
 
-**Proposed Structure
+**This command created controller, model, request, migration, create and list view
+
+
+
 
 
 
