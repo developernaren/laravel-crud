@@ -1,7 +1,7 @@
 {
     "name": "developernaren/laravel-crud",
     "description": "Package to create controller, models, migrations, requests and views",
-    "type": "Laravel Package",
+    "type": "Crud",
     "license": "MIT",
     "authors": [
         {
