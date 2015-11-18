@@ -17,14 +17,13 @@ class %%ModelName%%Controller extends %%BaseController%% {
 
     function index() {
 
-		$this->data['products'] = %%ModelName%%::paginate(15);
+		$this->data['%%ModelVarPlural%%'] = %%ModelName%%::paginate(15);
 		return view( '%%CrudSlug%%.list', $this->data);
 
     }
 
     function add() {
 
-        $this->data['categories'] = Category::all();
         $fieldArr = with(new %%ModelName%%)->getFillable();
         $this->data = InputHelper::setFields($fieldArr, [], $this->data, Input::old());
         $this->data['route'] = route('save%%StoreRoute%%');
@@ -33,8 +32,6 @@ class %%ModelName%%Controller extends %%BaseController%% {
 
     function edit(%%ModelVar%%) {
 
-        $this->data['categories'] = Category::all();
-        $this->data['subCategories'] = SubCategory::all();
         $fieldArr = with(new %%ModelName%%)->getFillable();
         $this->data['route'] = route('updateProduct', %%ModelVar%%->id);
         $this->data = InputHelper::setFields($fieldArr, %%ModelVar%%, $this->data, Input::old());

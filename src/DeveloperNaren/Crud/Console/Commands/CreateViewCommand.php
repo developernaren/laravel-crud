@@ -9,8 +9,8 @@
 namespace DeveloperNaren\Crud\Console\Commands;
 
 
+use DeveloperNaren\Crud\Writers\View;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
 
 class CreateViewCommand extends Command
 {
@@ -20,7 +20,7 @@ class CreateViewCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'crud:view --type';
+    protected $signature = 'crud:view {entity} {fieldsString}';
 
     /**
      * The console command description.
@@ -31,7 +31,10 @@ class CreateViewCommand extends Command
 
     function handle() {
 
+        $entity = $this->argument( 'entity' );
+        $fieldsString = $this->argument( 'fieldsString' );
 
+        new View( $entity, $fieldsString );
 
     }
 

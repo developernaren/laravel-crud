@@ -24,6 +24,10 @@ class View extends Writer
 
     protected $tableContent;
 
+    protected $addFormContent;
+
+
+
 
     function handle() {
 
@@ -31,21 +35,16 @@ class View extends Writer
 
         $this->info( $this->tableContent );
 
+    }
+
+
+    function renderContent() {
+
+        $this->renderTableBody();
 
     }
 
 
-
-    function renderContent( $type ) {
-
-
-        switch( $type ) {
-            case "table";
-                $this->renderTableBody();
-        }
-
-
-    }
 
     function renderTableBody() {
 
@@ -71,7 +70,7 @@ class View extends Writer
 
         foreach( $this->fieldArr as $fieldName =>  $value ) {
 
-            $content .= '<td> $'. $value .'</td>';
+            $content .= '<td>{!! $'. $fieldName .' !!}</td>';
         }
 
         $content .= '@endforeach';
@@ -85,26 +84,117 @@ class View extends Writer
     }
 
 
-
-    function writeView() {
-
-
-        $contentArr = [ 'TableContent' => $this->tableContent ];
+    function renderViewInputs( ) {
 
 
+        foreach( $this->fieldArr as $fieldName =>  $type ) {
 
+            switch( trim( $type ) ) {
 
+                case "str":
+                case "string":
+                    $this->renderInput( studly_case( $fieldName ), $fieldName) ;
+                    break;
+                case "int":
+                case "integer":
+                    $this->renderInput( 'integer', $fieldName );
+                    break;
+                case "txt":
+                case "text":
+                    $this->renderTextArea( studly_case( $fieldName ), $fieldName );
+                    break;
+                case "bool":
+                case "boolean":
+                    $this->renderRadio( studly_case( $fieldName ), $fieldName );
+                    break;
+                case "dec":
+                case "decimal":
+                    $this->renderInput( studly_case( $fieldName ), $fieldName) ;
+                    break;
+                case "fl":
+                case "float":
+                    $this->renderInput( studly_case( $fieldName ), $fieldName) ;
+                    break;
+                case "date":
+                    $this->renderInput( studly_case( $fieldName ), $fieldName) ;
+                    break;
+                case "datetime":
+                case "dttime":
+                    $this->renderInput( studly_case( $fieldName ), $fieldName) ;
+                    break;
+                case "time":
+                    $this->renderInput( studly_case( $fieldName ), $fieldName) ;
+                    break;
 
+            }
+        }
+
+        $target = 'resources/views/' . $this->modelVar ."/create.blade.php" ;
+
+        $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/CreateView.txt';
+
+        $contentKeyArr = get_object_vars( $this );
+        $this->write( $template, $contentKeyArr , $target );
 
     }
 
 
+    function renderList() {
+
+        foreach( $this->fieldArr as $fieldName =>  $type ) {
+
+            switch( trim( $type ) ) {
+
+                case "str":
+                case "string":
+                    $this->renderInput( studly_case( $fieldName ), $fieldName) ;
+                    break;
+                case "int":
+                case "integer":
+                    $this->renderInput( 'integer', $fieldName );
+                    break;
+                case "txt":
+                case "text":
+                    $this->renderInput( 'text', $fieldName );
+                    break;
+                case "bool":
+                case "boolean":
+                    $this->renderInput( 'boolean', $fieldName );
+                    break;
+                case "dec":
+                case "decimal":
+                    $this->renderInput( 'decimal', $fieldName );
+                    break;
+                case "fl":
+                case "float":
+                    $this->renderInput( 'float', $fieldName );
+                    break;
+                case "date":
+                    $this->renderInput( 'date', $fieldName );
+                    break;
+                case "datetime":
+                case "dttime":
+                    $this->renderInput( 'datetime', $fieldName );
+                    break;
+                case "time":
+                    $this->renderInput( 'time', $fieldName );
+                    break;
+
+            }
+        }
+
+        $target = 'resources/views/' . $this->modelVar ."/create.blade.php" ;
 
 
 
+        $contentKeyArr = [ 'AddFormContent' => $this->addFormContent ];
+
+        $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/CreateView.txt';
+
+        $this->write( $template, $contentKeyArr , $target );
 
 
-
+    }
 
 
 }

@@ -9,6 +9,7 @@
 namespace DeveloperNaren\Crud\Console\Commands;
 
 
+use DeveloperNaren\Crud\Writers\Model;
 use Illuminate\Console\Command;
 
 class CreateModelCommand extends Command
@@ -19,18 +20,22 @@ class CreateModelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'crud:model';
+    protected $signature = 'crud:model {entity} {fieldsString}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create Controller';
+    protected $description = 'Create Model for an entity';
 
 
     function handle() {
 
+        $entity = $this->argument( 'entity' );
+        $fieldsString = $this->argument( 'fieldsString' );
+
+        new Model( $entity, $fieldsString );
 
     }
 

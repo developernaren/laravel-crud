@@ -2,20 +2,19 @@
 /**
  * Created by PhpStorm.
  * User: narendra
- * Date: 11/15/15
- * Time: 5:56 PM
+ * Date: 11/16/15
+ * Time: 9:19 AM
  */
 
 namespace DeveloperNaren\Crud\Console\Commands;
 
-
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
 use DeveloperNaren\Crud\Writers\Controller;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
-class CreateControllerCommand extends Command
+
+class CreateControllerCommand extends CrudCommand
 {
-
 
 
     /**
@@ -23,7 +22,7 @@ class CreateControllerCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'crud:controller';
+    protected $signature = 'crud:controller {entity}';
 
     /**
      * The console command description.
@@ -33,17 +32,13 @@ class CreateControllerCommand extends Command
     protected $description = 'Create Controller';
 
 
+    /**
+     * @param string $controllerContent
+     */
+    function handle() {
 
-
-    public function handle()
-    {
-
-
-
-
-
+        $this->crudName =$this->argument( "entity");;
+        new Controller( $this->crudName );
     }
-
-
 
 }

@@ -6,14 +6,32 @@ namespace DeveloperNaren\Crud\Writers;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Mockery\CountValidator\Exception;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
-class Writer extends Command
+class Writer
 {
     protected $crudName;
 
     protected $crudSlug;
 
     protected $fieldArr;
+
+    protected $tableName;
+
+    protected $modelName;
+
+    protected $modelWNameSpace;
+
+    protected $formRequestWNameSpace;
+
+    protected $baseController;
+
+    protected $modelVar;
+
+    protected $namespace;
+
+    protected $modelVarPlural;
 
      function parseFields( $fields ) {
 
@@ -31,12 +49,16 @@ class Writer extends Command
 
     }
 
+
+    function setTableName( $entity ) {
+
+        $this->tableName = snake_case( camel_case( $entity ));
+    }
+
     function write( $file, $contentKeyArr, $target ) {
 
 
         $controllerFile = base_path( $file );
-
-        $this->info( $controllerFile );
 
         $content = file_get_contents( $controllerFile );
 
@@ -54,9 +76,8 @@ class Writer extends Command
 
         $filePath = explode( '/', $target );
 
-
         array_pop( $filePath );
-        $this->info( json_encode( $filePath ) );
+
 
         foreach( $filePath as $t ) {
 
@@ -65,8 +86,6 @@ class Writer extends Command
             } else {
                 $newDir .= "/" . $t;
             }
-            $this->info( $newDir );
-
             if ( !is_dir( $newDir ) )  {
                 mkdir( $newDir );
             }
@@ -78,6 +97,64 @@ class Writer extends Command
         fclose($file);
 
     }
+
+    function setBaseController() {
+
+        $this->baseController = Config::get( 'crud.base_controller' );
+
+    }
+
+
+
+
+    /**
+     * @param mixed $crudSlug
+     */
+    public function setCrudSlug($crudSlug) {
+
+        $this->crudSlug = $crudSlug;
+    }
+
+
+    public function setNameSpace() {
+
+        $this->namespace = Config::get('crud.namespace_root');
+    }
+
+
+    public function setModelName( $entity ) {
+
+        $this->modelName = Str::studly( snake_case( $entity ) );
+        $this->modelWNameSpace = $this->namespace ."\Models\\" . $this->modelName;
+    }
+
+
+    public function setFormRequests() {
+
+        $this->formRequest = $this->modelName . 'FormRequest';
+        $this->formRequestWNameSpace = $this->namespace ."\Requests\\" . $this->formRequest;
+
+    }
+
+
+    public function setModelVar() {
+        $this->modelVar = '$' . Str::camel( $this->crudName );
+    }
+
+
+    public function setStoreRoute() {
+        $this->storeRoute = 'store' . $this->modelName;
+    }
+
+
+    public function setListRoute() {
+        $this->listRoute = 'list' . $this->modelName;
+    }
+
+    function setModelVarPlural() {
+        $this->modelVarPlural = str_plural( $this->modelVar );
+    }
+
 
 
 }

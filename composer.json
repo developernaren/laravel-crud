@@ -1,0 +1,19 @@
+{
+    "name": "developernaren/laravel-crud",
+    "description": "Package to create controller, models, migrations, requests and views",
+    "type": "Laravel Package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Naren",
+            "email": "developer.naren@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/database": "5.1.*",
+        "illuminate/support": "5.1.*",
+        "illuminate/config": "5.1.*"
+    }
+}

@@ -9,51 +9,52 @@
 namespace DeveloperNaren\Crud\Providers;
 
 
+
 use DeveloperNaren\Crud\Console\Commands\CreateControllerCommand;
+use DeveloperNaren\Crud\Console\Commands\CreateModelCommand;
+use DeveloperNaren\Crud\Console\Commands\CreateMigrationCommand;
+use DeveloperNaren\Crud\Console\Commands\CreateFormRequestCommand;
+use DeveloperNaren\Crud\Console\Commands\CreateViewCommand;
 use DeveloperNaren\Crud\Console\Commands\CrudCommand;
-use DeveloperNaren\Crud\Writers\Controller;
-use DeveloperNaren\Crud\Writers\Model;
-use DeveloperNaren\Crud\Writers\Request;
-use DeveloperNaren\Crud\Writers\View;
 use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
 {
+
+    private  $commandsArr = [
+        'command.crud.controller' => CreateControllerCommand::class,
+        'command.crud.model' => CreateModelCommand::class,
+        'command.crud.view' => CreateViewCommand::class,
+        'command.crud.request' => CreateFormRequestCommand::class,
+        'comamnd.crud.migration' => CreateMigrationCommand::class,
+        'comamnd.crud.whole' => CrudCommand::class
+    ];
+
+
     public function register()
     {
-        $this->app->singleton('command.crud.controller', function() {
 
-            return new Controller();
-        });
+        foreach( $this->commandsArr as $command => $class ) {
 
-        $this->commands('command.crud.controller');
+            $this->app->singleton( $command, function() use ( $class )  {
 
-        $this->app->singleton('command.crud.model', function() {
+                return new $class;
+            });
 
-            return new Model();
-        });
+            $this->commands( $command );
 
-        $this->commands('command.crud.model');
-
-        $this->app->singleton('command.crud.view', function() {
-
-            return new View();
-        });
-
-        $this->commands('command.crud.view');
-
-
-        $this->app->singleton('command.crud.request', function() {
-
-            return new Request();
-        });
-
-        $this->commands('command.crud.request');
-
-
+        }
     }
 
-    function registerCommands() {
+
+
+    public function boot()
+    {
+        $this->publishes([
+                             __DIR__.'/../config/crud.php' => config_path('crud.php'),
+                         ], 'config');
+
+
 
     }
 

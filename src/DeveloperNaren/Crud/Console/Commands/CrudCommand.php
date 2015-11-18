@@ -14,100 +14,33 @@ class CrudCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'crud:model';
+    protected $signature = 'crud:whole {entity} {fieldsString}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create Controller';
-
-    /**
-     * @var table that the crud is supposed to generate
-     */
-    protected $table;
-
-    /**
-     * @var array fields of the table
-     */
-    protected $fields = [];
-
-    /**
-     * @var array
-     */
-    protected $formFields = [];
-
-    protected $viewTypes = 'all';
-
-    protected $controller;
+    protected $description = 'Create Controller, Model, View, Request and Migration at Once';
 
 
+    protected $crudName;
 
-    function prepare() {
-
-        $this->prepareModel();
-        $this->prepareController();
-        $this->prepareView();
-
-    }
-
-
-    private function parseFields( $fields ) {
-
-        $allFields = explode(',', $fields );
-
-        $allFieldArr = [];
-
-        foreach( $allFields as $field ) {
-            list($name, $type) = explode(':', $field );
-            $allFieldArr[ trim($name)] = trim( $type );
-
-        }
-
-        $this->fields = $allFieldArr;
-
-    }
-
-    private function prepareModel() {
-
-        $this->table = $this->ask( "What table should I work on");
-        $fields = $this->ask( "What are the fields in the table? Please specify in format <fieldname>:<type> separated by comma (,)");
-        $fieldArr = $this->parseFields( $fields );
-
-
-    }
-
-    private function prepareController() {
-
-        $this->controller = $this->ask( "Controller");
-
-    }
-
-    private function prepareView() {
-
-        $viewTypes = $this->ask( "What views should I generate? write all for all");
-
-        $types = str_contains( $viewTypes, ',') ? explode(',', $viewTypes) : ['all'];
-
-
-
-
-
-
-    }
-
-
-    private function generate() {
-
-    }
+    protected $fieldsStrig;
 
 
 
     function handle() {
 
-        $this->prepareController();
-        new Controller( $this->controller );
+        $entity = $this->argument( "entity" );
+        $fieldsString = $this->argument( "fieldsString" );
+
+
+        $this->call( 'crud:controller',  [ 'entity' => $entity ]  );
+        $this->call( 'crud:model',   [ 'entity' => $entity, 'fieldsString' => $fieldsString ]  );
+        $this->call( 'crud:view',   [ 'entity' => $entity, 'fieldsString' => $fieldsString ]  );
+        $this->call( 'crud:request',   [ 'entity' => $entity, 'fieldsString' => $fieldsString ]  );
+        $this->call( 'crud:migration',   [ 'entity' => $entity, 'fieldsString' => $fieldsString ]  );
 
     }
 

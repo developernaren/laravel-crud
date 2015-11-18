@@ -12,128 +12,56 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 
+
 class Controller extends Writer
 {
 
+    protected $formRequest;
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'crud:controller';
+    protected $storeRoute;
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create Controller';
-
-    private $nameSpace;
-
-    private $modelName;
-
-    private $formRequest;
-
-    private $modelVar;
-
-    private $storeRoute;
-
-    private $listRoute;
-
-    private $controllerContent = '';
-
-    private $modelWNameSpace;
-
-    private $formRequestWNameSpace;
-
-    private $baseController = 'BaseController';
-
-    private $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/Controller.txt';
-
-
-
-    function __constructor() {
-
-
-    }
-
-    private function setTemplate() {
-        $template = Config::get( 'crud.controller_template' );
-    }
-
-
-    /**
-     * @param mixed $crudSlug
-     */
-    public function setCrudSlug($crudSlug) {
-
-
-        $this->crudSlug = $crudSlug;
-    }
-
-
-    public function setNameSpace() {
-
-        $this->nameSpace = Config::get('crud.namespace_root');
-        $this->info( $this->nameSpace);
-    }
-
-
-    public function setModelName() {
-
-        $this->modelName = Str::studly( $this->crudName );
-        $this->modelWNameSpace = $this->nameSpace ."\Models\\" . $this->modelName;
-    }
-
-
-    public function setFormRequests() {
-
-        $this->formRequest = $this->modelName . 'FormRequest';
-        $this->formRequestWNameSpace = $this->nameSpace ."\Requests\\" . $this->formRequest;
-
-    }
-
-
-    public function setModelVar() {
-        $this->modelVar = '$' . Str::camel( $this->crudName );
-    }
-
-
-    public function setStoreRoute() {
-        $this->storeRoute = 'store' . $this->modelName;
-    }
-
-
-    public function setListRoute() {
-        $this->listRoute = 'list' . $this->modelName;
-    }
+    protected $listRoute;
 
 
 
     /**
      * @param string $controllerContent
      */
-    function handle() {
+    function __construct( $entity ) {
 
-        $this->crudName =$this->ask( "crud");;
+        $this->crudName = $entity;
 
         $this->setCrudSlug( Str::slug( $this->crudName) );
-
         $this->setNameSpace();
-        $this->setModelName();
-        $this->setModelVar();
+        $this->setModelName( $entity );
+        $this->setModelVar( $entity );
+        $this->setModelVarPlural();
         $this->setFormRequests();
         $this->setStoreRoute();
         $this->setListRoute();
-        $this->setTemplate( );
+        $this->setTemplate();
+        $this->setBaseController();
 
         $objectVars = get_object_vars( $this );
-
         $target = 'app/Http/Controllers/' . $this->modelName . "Controller.php";
         $this->write( $this->template, $objectVars, $target );
 
     }
+
+    private function setTemplate() {
+
+        $template = Config::get( 'crud.controller_template' );
+
+        if ( empty( $template ) ){
+            $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/Controller.txt';
+        }
+
+        $this->template = $template;
+    }
+
+
+
+
+
 
 }
