@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: narendra
- * Date: 11/15/15
- * Time: 5:32 PM
- */
 
 namespace DeveloperNaren\Crud\Providers;
 
