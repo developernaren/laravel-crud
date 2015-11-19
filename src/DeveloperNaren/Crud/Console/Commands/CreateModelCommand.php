@@ -29,6 +29,10 @@ class CreateModelCommand extends Command
      */
     protected $description = 'Create Model for an entity';
 
+    /**
+     * handles the command
+     * calls the model write class
+     */
 
     function handle() {
 

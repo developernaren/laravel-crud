@@ -29,6 +29,10 @@ class CreateViewCommand extends Command
      */
     protected $description = 'Create View';
 
+    /**
+     * handles the commands
+     * calls the view write command
+     */
     function handle() {
 
         $entity = $this->argument( 'entity' );

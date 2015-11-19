@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: narendra
- * Date: 11/16/15
- * Time: 9:19 AM
- */
 
 namespace DeveloperNaren\Crud\Console\Commands;
 
@@ -12,7 +6,11 @@ use DeveloperNaren\Crud\Writers\Controller;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
-
+/**
+ * Class CreateControllerCommand
+ * @package DeveloperNaren\Crud\Console\Commands
+ * create controller command and fires the writer
+ */
 class CreateControllerCommand extends CrudCommand
 {
 
@@ -33,7 +31,10 @@ class CreateControllerCommand extends CrudCommand
 
 
     /**
-     * @param string $controllerContent
+     * handles the command.
+     * Basically create a controller for the entity
+     * calls the controller write class
+     * we only need name of the entity to create a controller
      */
     function handle() {
 

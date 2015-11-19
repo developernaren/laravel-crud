@@ -2,6 +2,9 @@
 
 namespace DeveloperNaren\Crud\Providers;
 
+/**
+ * Registers all the commands
+ */
 
 
 use DeveloperNaren\Crud\Console\Commands\CreateControllerCommand;
@@ -15,6 +18,11 @@ use Illuminate\Support\ServiceProvider;
 class CrudServiceProvider extends ServiceProvider
 {
 
+    /**
+     * @var array
+     * All the commands that we have
+     */
+
     private  $commandsArr = [
         'command.crud.controller' => CreateControllerCommand::class,
         'command.crud.model' => CreateModelCommand::class,
@@ -24,6 +32,9 @@ class CrudServiceProvider extends ServiceProvider
         'comamnd.crud.whole' => CrudCommand::class
     ];
 
+    /**
+     * registers the commands for use
+     */
 
     public function register()
     {
@@ -40,6 +51,9 @@ class CrudServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * publishes the config file
+     */
 
 
     public function boot()
