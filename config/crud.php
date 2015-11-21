@@ -18,6 +18,8 @@ return [
 
     "migration_target" => 'database/migrations',
 
+    "model_target" => 'app/Models',
+
     'use_blade' => true,
 
     'layout' => 'layouts.admin',

@@ -50,6 +50,10 @@ class Model extends Writer {
 
     protected $fillableArr;
 
+    private $target;
+
+    private $relation = '';
+
 
     /**
      * @param $entity
@@ -62,11 +66,16 @@ class Model extends Writer {
         $this->setTableName( $entity );
         $this->setModelName( $entity );
         $this->setNameSpace();
+        $this->setTarget();
         $this->parseFields( $fieldsString );
         $this->prepareModel();
 
 
+    }
 
+    function setTarget() {
+
+        $this->target = Config::get( 'crud.model_target' );
     }
 
     /**
@@ -77,11 +86,13 @@ class Model extends Writer {
         //generates fillable
         $this->renderFillable();
         //needs to come from config file
-        $target = 'app/Models/' . $this->modelName . ".php";
+        //added from config file
+        $target = $this->target . '/' . $this->modelName . ".php";
+
+        $this->writeRelations();
+
         $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/Model.txt';
-
         $this->write( $template, get_object_vars( $this ), $target );
-
 
     }
 
@@ -92,6 +103,30 @@ class Model extends Writer {
 
         $fieldArr = array_keys( $this->fieldArr );
         $this->fillableArr = "['". implode( "','", $fieldArr ) ."']";
+
+
     }
+
+    function writeRelations( ) {
+
+
+        if ( !empty ( $this->foreignKeyArr ) ) {
+
+            foreach( $this->foreignKeyArr as $fieldName ) {
+                list( $frStr, $tableNFk ) = explode( '-', $fieldName );
+
+                list( $tableName, $fkTableField ) = explode( '.', $tableNFk );
+                $this->relation .= 'function ' . camel_case( $tableName ) . '() {'. PHP_EOL;
+                $this->relation .= '$this->belongsTo( "'. $this->namespace .'\\'. studly_case( str_singular( $tableName ) ) .'" );' .PHP_EOL ;
+                $this->relation .= "}" . PHP_EOL;
+            }
+
+        }
+
+
+
+    }
+
+
 
 }
