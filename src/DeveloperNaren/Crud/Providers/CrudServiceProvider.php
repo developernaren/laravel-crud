@@ -59,7 +59,7 @@ class CrudServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-                             __DIR__.'/../config/crud.php' => config_path('crud.php'),
+                             __DIR__.'/../../../../config/crud.php' => config_path('crud.php'),
                          ], 'config');
 
 

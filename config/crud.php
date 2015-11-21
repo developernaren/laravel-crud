@@ -16,16 +16,15 @@ return [
 
     'list_template' => '',
 
-    "migration_target" => 'database/migrations',
-
-    "model_target" => 'app/Models',
-
     'use_blade' => true,
 
     'layout' => 'layouts.admin',
 
-    'base_controller' => 'BaseController',
+    "migration_target" => 'database/migrations',
 
+    "model_target" => 'app/Models',
+
+    'base_controller' => 'BaseController',
 
     'paginate' => [
 
