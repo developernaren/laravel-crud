@@ -121,7 +121,7 @@ class Migration extends Writer{
 
             list( $tableName, $fkTableField ) = explode( '.', $tableNFk );
 
-            $this->migrationContent .= ' $table->index()->unsigned()->integer("'. $fieldName .'")';
+            $this->migrationContent .= ' $table->integer("'. $fieldName .'")->index()->unsigned()';
             if ( $frStr == 'nlfr-' ) {
                 $this->migrationContent .= '->nullable()';
             }
