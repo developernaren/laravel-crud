@@ -17,6 +17,8 @@ class Migration extends Writer{
 
     private $target;
 
+    private $migrationClassTable;
+
     function __construct( $entity, $fieldString ) {
 
         $this->setTableName( $entity );
@@ -43,6 +45,8 @@ class Migration extends Writer{
 
         // need to get these files from config
         $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/Migration.txt';
+
+        $this->migrationClassTable = studly_case( 'create_' .$this->tableName . '_table' );
         $target = $this->target . '/'. date( "Y_m_d_") . time() . '_create_' .$this->tableName . '_table.php';
 
         $contentArr = get_object_vars( $this );
@@ -118,13 +122,13 @@ class Migration extends Writer{
             list( $tableName, $fkTableField ) = explode( '.', $tableNFk );
 
             $this->migrationContent .= ' $table->index()->unsigned()->integer("'. $fieldName .'")';
-                if ( $frStr == 'nlfr-' ) {
-                    $this->migrationContent .= '->nullable()';
-                }
+            if ( $frStr == 'nlfr-' ) {
+                $this->migrationContent .= '->nullable()';
+            }
 
-                $this->migrationContent .= ";" . PHP_EOL;
+            $this->migrationContent .= ";" . PHP_EOL;
             $this->migrationContent .= ' $table->foreign("'. $fieldName.'")'
-            .'->references("'. $tableName.'")->on("'. $fkTableField .'")->unsigned()->integer("'. $fieldName .'")' . ";". PHP_EOL;
+                .'->references("'. $tableName.'")->on("'. $fkTableField .'")->onUpdate("cascade")->onDelete("cascade")' . ";". PHP_EOL;
             return;
         }
 
