@@ -50,6 +50,14 @@ $ php artisan request:migration <entity> <field string>
 ```
 This generates migration for the given entity with the mentioned fields
 
+We can also generate foreign keys through this package. The supplied format to support foreign keys should be
+
+`<field>:fr-<foreigntable>.<foreign field>` for not null foreign keys
+
+`<field>:nlfr-<foreigntable>.<foreign field>` for nullable foreign keys
+
+We can also provide path for the migration to be created at in config file.
+
 Todos:
 
 - Make the template dynamic
