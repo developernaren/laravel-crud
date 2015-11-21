@@ -35,6 +35,29 @@ $ php artisan crud:model <entity> <field string>
 ```
 This generats model for the given entity with fillable
 
+We can also generate relations this package. The supplied format to support realtions
+
+`<field>:fr-<foreigntable>.<foreign field>` for not null foreign keys
+
+`<field>:nlfr-<foreigntable>.<foreign field>` for nullable foreign keys
+
+The foreign keys are made generic to support migration and relation.
+ 
+ `$  php artisan crud:model blog name:str,author_id:nlfr-users.id` 
+ 
+ This command will generate a method
+ 
+ ```
+ function user() {
+    $this->belongsTo( 'User' );
+ } 
+ ```
+ 
+ in Blog.php
+ 
+ Meaning a blog belongs to a user
+
+
 ```
 $ php artisan crud:view <entity> <field string>
 ```
