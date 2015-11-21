@@ -117,18 +117,18 @@ class Migration extends Writer{
 
             list( $tableName, $fkTableField ) = explode( '.', $tableNFk );
 
-            $this->migrationContent .= ' $this->index()->unsigned()->integer("'. $fieldName .'")';
+            $this->migrationContent .= ' $table->index()->unsigned()->integer("'. $fieldName .'")';
                 if ( $frStr == 'nlfr-' ) {
                     $this->migrationContent .= '->nullable()';
                 }
 
                 $this->migrationContent .= ";" . PHP_EOL;
-            $this->migrationContent .= ' $this->foreign("'. $fieldName.'")'
+            $this->migrationContent .= ' $table->foreign("'. $fieldName.'")'
             .'->references("'. $tableName.'")->on("'. $fkTableField .'")->unsigned()->integer("'. $fieldName .'")' . ";". PHP_EOL;
             return;
         }
 
-        $this->migrationContent .= ' $this->' . $type . "( '". $fieldName ."' );" . PHP_EOL;
+        $this->migrationContent .= ' $table->' . $type . "( '". $fieldName ."' );" . PHP_EOL;
 
     }
 
