@@ -32,7 +32,7 @@ class Writer
     /**
      * @var array of the fields that the fields are supposed to have
      */
-    protected $fieldArr;
+    protected $fieldArr = [];
 
     /**
      * @var
@@ -84,6 +84,8 @@ class Writer
      */
     protected $modelVarPlural;
 
+    protected $foreignKeyArr;
+
 
     /**
      * Parses the human readable field string to the machine readable(lol) array
@@ -97,10 +99,18 @@ class Writer
         $allFieldArr = [];
 
         foreach( $allFields as $field ) {
-
             $thisFieldArr =  explode(':', $field );
             list($name, $type) = $thisFieldArr;
-            $allFieldArr[ trim($name)] = trim( $type );
+
+            $fieldDetail = $type;
+
+            if ( str_contains( $type, 'fr-' ) ) {
+                $fieldDetail = "int";
+                $this->foreignKeyArr[ trim($name) ] = $type;
+
+            }
+            $allFieldArr[ trim($name)] = $fieldDetail;
+
         }
 
         $this->fieldArr = $allFieldArr;

@@ -1,32 +1,36 @@
 <?php
 
 namespace DeveloperNaren\Crud\Writers;
+use Illuminate\Support\Facades\Config;
 
 /**
  * Class Migration
  * @package DeveloperNaren\Crud\Writers
  * writes migration
  *ToDo Needs to support foreign keys
- * the string, I think, should be in format <field>:fr-<foreigntable>;<foreign field>
+ * the string, I think, should be in format <field>:fr-<foreigntable>.<foreign field>
  */
 
 class Migration extends Writer{
 
     protected $migrationContent;
 
-
-
+    private $target;
 
     function __construct( $entity, $fieldString ) {
 
         $this->setTableName( $entity );
         $this->setModelName( $entity);
         $this->parseFields( $fieldString );
+        $this->setTarget();
         $this->makeMigration();
 
     }
 
+    function setTarget() {
 
+        $this->target = Config::get( 'crud.migration_target' );
+    }
 
     private function makeMigration() {
 
@@ -39,7 +43,7 @@ class Migration extends Writer{
 
         // need to get these files from config
         $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/Migration.txt';
-        $target = 'database/migrations/'. date( "Y_m_d_") . time() . '_create_' .$this->tableName . '_table.php';
+        $target = $this->target . '/'. date( "Y_m_d_") . time() . '_create_' .$this->tableName . '_table.php';
 
         $contentArr = get_object_vars( $this );
         $this->write( $template, $contentArr, $target );
@@ -107,6 +111,22 @@ class Migration extends Writer{
      */
     private function writeField( $type, $fieldName) {
 
+        if ( !empty ( $this->foreignKeyArr[ $fieldName ] ) ) {
+
+            list( $frStr, $tableNFk ) = explode( '-', $this->foreignKeyArr[ $fieldName ] );
+
+            list( $tableName, $fkTableField ) = explode( '.', $tableNFk );
+
+            $this->migrationContent .= ' $this->index()->unsigned()->integer("'. $fieldName .'")';
+                if ( $frStr == 'nlfr-' ) {
+                    $this->migrationContent .= '->nullable()';
+                }
+
+                $this->migrationContent .= ";" . PHP_EOL;
+            $this->migrationContent .= ' $this->foreign("'. $fieldName.'")'
+            .'->references("'. $tableName.'")->on("'. $fkTableField .'")->unsigned()->integer("'. $fieldName .'")' . ";". PHP_EOL;
+            return;
+        }
 
         $this->migrationContent .= ' $this->' . $type . "( '". $fieldName ."' );" . PHP_EOL;
 
