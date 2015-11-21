@@ -128,7 +128,7 @@ class Migration extends Writer{
 
             $this->migrationContent .= ";" . PHP_EOL;
             $this->migrationContent .= ' $table->foreign("'. $fieldName.'")'
-                .'->references("'. $tableName.'")->on("'. $fkTableField .'")->onUpdate("cascade")->onDelete("cascade")' . ";". PHP_EOL;
+                .'->on("'. $tableName.'")->references("'. $fkTableField .'")->onUpdate("cascade")->onDelete("cascade")' . ";". PHP_EOL;
             return;
         }
 
