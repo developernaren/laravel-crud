@@ -63,6 +63,8 @@ $ php artisan crud:view <entity> <field string>
 ```
 This generates create.blade.php and list.blade.php for the given entity with the fields
 
+This module can now generate input, textarea, select, radio, checkbox based on the fields provided
+
 ```
 $ php artisan crud:request <entity> <field string>
 ```
