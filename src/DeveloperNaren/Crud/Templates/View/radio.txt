@@ -1,0 +1,7 @@
+<div class="checkbox">
+    <label>
+      <div class="radio">
+      <span class="checked"><input type="radio" value="%%Value%%" name="%%FieldName%%" class="uniform"></span>
+      </div>%%FieldLabel%%
+    </label>
+</div><!-- /.checkbox -->

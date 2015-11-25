@@ -1,0 +1,12 @@
+{!! Form::open( route( '%%AddFormAction%%' ), [ 'class' => '' ] ) !!}
+
+        %%FormContent%%
+
+ <div class="form-group">
+    <label for="submit" class="control-label col-lg-4">&nbsp;</label>
+    <div class="col-lg-8">
+          <button class="btn btn-primary btn-grad" >Save</button>
+    </div>
+  </div>
+
+{!! Form::close() !!}

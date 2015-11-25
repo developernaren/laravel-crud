@@ -26,6 +26,24 @@ return [
 
     'base_controller' => 'BaseController',
 
+    'checkbox_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkbox.txt',
+
+    'checkbox_div_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkBoxDiv.txt',
+
+    'form_layout_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkbox.txt',
+
+    'page_layout_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkbox.txt',
+
+    'radio_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkBoxDiv.txt',
+
+    'radio_div_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkbox.txt',
+
+    'select_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkBoxDiv.txt',
+
+    'text_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkbox.txt',
+
+    'textarea_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/textArea.txt',
+
     'paginate' => [
 
         'status' => 'true',

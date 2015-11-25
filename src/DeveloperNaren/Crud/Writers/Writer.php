@@ -138,21 +138,24 @@ class Writer
      */
     function write( $file, $contentKeyArr, $target ) {
 
-        //template file
-        $controllerFile = base_path( $file );
-        //content of the template ifile
-        $content = file_get_contents( $controllerFile );
-        //start the replacing
-        $newContent = $content;
+        $newContent = $this->replaceVarNReturnContent( $file, $contentKeyArr );
+        $this->writeDirectory( $target );
+        $this-$this->openAndWriteActualFile( $newContent, $target );
 
-        foreach( $contentKeyArr as $key => $value ) {
+    }
 
-            if ( !is_array( $value ) && !is_object( $value )) {
-                //actually replace
-                $newContent = str_replace( '%%'. studly_case( $key ) . "%%", $value, $newContent );
-            }
+    private  function openAndWriteActualFile( $newContent, $target ) {
 
-        }
+        //open the target file
+        $file = fopen( base_path ( $target ),"wb");
+        //write the file
+        fwrite($file,$newContent);
+        //save the thing
+        fclose($file);
+    }
+
+
+    function writeDirectory( $target ) {
 
         //we are not sure if all the path directories,
         //checking and creating
@@ -181,16 +184,26 @@ class Writer
             }
 
         }
+    }
 
-        //open the target file
-        $file = fopen( base_path ( $target ),"wb");
-        //write the file
-        fwrite($file,$newContent);
-        //save the thing
-        fclose($file);
+    function replaceVarNReturnContent( $file, $contentKeyArr ) {
+        //template file
+        $absolutePath = base_path( $file );
+        //content of the template ifile
+        $content = file_get_contents( $absolutePath );
+        //start the replacing
+        $newContent = $content;
 
-        //ToDO I want to place the file manipultaions into some other functions
+        foreach( $contentKeyArr as $key => $value ) {
 
+            if ( !is_array( $value ) && !is_object( $value )) {
+                //actually replace
+                $newContent = str_replace( '%%'. studly_case( $key ) . "%%", $value, $newContent );
+            }
+
+        }
+
+        return $newContent . PHP_EOL;
     }
 
     /*

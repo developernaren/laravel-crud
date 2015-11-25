@@ -1,0 +1,6 @@
+<div class="form-group">
+    <label class="control-label col-lg-4" for="%%FieldName%%">%%FieldLabel%%</label>
+    <div class="col-lg-8">
+          <textarea class="form-control" id="%%FieldName%%" name="%%FieldName%%" ></textarea>
+    </div>
+</div>

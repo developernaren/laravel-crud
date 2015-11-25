@@ -1,0 +1,11 @@
+<div class="checkbox">
+    <label>
+        <div class="checker">
+        <span class="checked">
+            <input type="checkbox"
+            name="%%FieldName%%[]"
+            value="%%Value%%"
+            class="uniform">
+        </span></div> %%FieldLabel%%
+    </label>
+</div>

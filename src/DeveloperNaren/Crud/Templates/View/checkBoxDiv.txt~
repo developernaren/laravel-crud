@@ -1,0 +1,6 @@
+<div class="form-group">
+    <label class="control-label col-lg-4">Checkbox</label>
+    <div class="col-lg-8">
+        %%CheckBoxes%%
+    </div>
+</div>
