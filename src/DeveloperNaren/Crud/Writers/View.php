@@ -46,6 +46,10 @@ class View extends Writer {
 
     private $textAreaTemplate;
 
+    private $viewTarget;
+
+    private $completeForm;
+
 
 
     /**
@@ -56,33 +60,11 @@ class View extends Writer {
      */
     function __construct($entity, $fieldsString) {
 
-
-        //now this is a tricky one the parseField in the parent just did not work
-        //I am not sure why but this code need to be removed
-        //Guess this is a ToDo then
-//        $allFields = explode(',', $fieldsString);
-//        $allFieldArr = [];
-//
-//        foreach ($allFields as $field) {
-//
-//            $thisFieldArr = explode(':', $field);
-//            list($name, $type) = $thisFieldArr;
-//            $allFieldArr[trim($name)] = trim($type);
-//        }
-//
-//
-//
-//        $this->fieldArr = $allFieldArr;
-
         $this->parseFields( $fieldsString );
-
-
         //just some setters
         $this->setModelName($entity);
         $this->setTableName($entity);
         $this->setModelVar();
-
-
 
         //setting templates for everything, I hate doing things like this.
         //ToDo someone create an array loop over the methods please
@@ -95,12 +77,10 @@ class View extends Writer {
         $this->setTextTemplate();
         $this->setTextAreaTemplate();
         $this->setSelectTemplate();
-
-
-
+        $this->setViewTarget();
 
         //we have a table in the list file, write that thing
-       // $this->renderTableBody();
+        $this->renderTableBody();
         $this->renderViewInputs();
 
 
@@ -218,10 +198,23 @@ class View extends Writer {
 
         }
 
-//        $target = 'resources/views/' . str_slug($this->modelName) . "/create.blade.php";
-//        $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/CreateView.txt';
-//        $contentKeyArr = get_object_vars($this);
-//        $this->write($template, $contentKeyArr, $target);
+
+        $this->renderForm();
+        $target = $this->viewTarget . '/' . str_slug($this->modelName) . "/create.blade.php";
+        $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/CreateView.txt';
+        $contentKeyArr = ['form' => $this->completeForm ];
+        $this->write($template, $contentKeyArr, $target);
+
+    }
+
+    function renderForm() {
+
+        $contentKeyArr = [
+            'addFormAction' => 'save' . $this->modelName,
+            'formContent'   => $this->addFormContent
+        ];
+
+         $this->completeForm =  $this->replaceVarNReturnContent( $this->formLayoutTemplate, $contentKeyArr );
 
     }
 
@@ -340,9 +333,6 @@ class View extends Writer {
 
             list($frStr, $tableNFk) = explode('-', $foreignStr);
             list($tableName, $fkTableField) = explode('.', $tableNFk);
-
-
-
             $contentArr = [
                 'modelVarPlural' => $tableName,
                 'modelVar' => str_singular( $tableName ),
@@ -350,11 +340,6 @@ class View extends Writer {
             ];
 
             $this->addFormContent .= $this->replaceVarNReturnContent( $this->selectTemplate, $contentArr );
-
-            echo $this->addFormContent;
-
-
-
 
         }
 
@@ -404,6 +389,15 @@ class View extends Writer {
     public function setTextAreaTemplate() {
         $this->textAreaTemplate  = Config::get( 'crud.textarea_template' );;
     }
+
+    /**
+     * @param mixed $viewTarget
+     */
+    public function setViewTarget() {
+        $this->viewTarget = Config::get('crud.view_target');
+    }
+
+
 
 
 

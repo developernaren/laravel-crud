@@ -140,7 +140,7 @@ class Writer
 
         $newContent = $this->replaceVarNReturnContent( $file, $contentKeyArr );
         $this->writeDirectory( $target );
-        $this-$this->openAndWriteActualFile( $newContent, $target );
+        $this->openAndWriteActualFile( $newContent, $target );
 
     }
 
