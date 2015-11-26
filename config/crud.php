@@ -24,6 +24,8 @@ return [
 
     "model_target" => 'app/Models',
 
+    "view_target" => "resources/views",
+
     'base_controller' => 'BaseController',
 
     'checkbox_template' => 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/View/checkbox.txt',

@@ -123,7 +123,7 @@ class View extends Writer {
 
         //writing the list file
         //ToDo Needs to come from template file
-        $target = 'resources/views/' . str_slug($this->modelName) . "/list.blade.php";
+        $target = $this->viewTarget . '/' . str_slug($this->modelName) . "/list.blade.php";
         $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/ListView.txt';
         $contentKeyArr = get_object_vars($this);
         $this->write($template, $contentKeyArr, $target);
