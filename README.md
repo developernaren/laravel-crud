@@ -9,7 +9,15 @@ Note: This pacakage is still not a stable package, hence not suitable for produc
 ```
 DeveloperNaren\Crud\Providers\CrudServiceProvider::class
 ```
-add this line to the service providers list in app.config.php and that;s it.
+add this line to the service providers list in app.config.php and that's it.
+
+```
+$ php artisan vendor:publish
+```
+
+To copy the config file to your config directory
+
+I am making this package highly customizable. A lof of options in this package can be customized through the config file.
 
 ```
 $ php artisan crud:whole
