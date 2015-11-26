@@ -237,6 +237,15 @@ class View extends Writer {
     }
 
 
+    function makeLabel( $name ) {
+        return ucwords( str_replace( '_', ' ', snake_case( $name ) ) );
+    }
+
+    function makeFieldName( $name ) {
+        return snake_case( $name );
+    }
+
+
     /**
      * Prepare the Input field
      * @param $label
@@ -246,8 +255,8 @@ class View extends Writer {
     function renderText($label, $name) {
 
         $contentKeyArr = [
-            'fieldName' => ucwords( str_replace( '_', ' ', snake_case( $name ) ) ),
-            'fieldLabel' => $label
+            'fieldName' => $this->makeFieldName( $name ),
+            'fieldLabel' => $this->makeLabel( $name )
         ];
 
         $this->addFormContent .= $this->replaceVarNReturnContent( $this->textTemplate, $contentKeyArr );
@@ -263,8 +272,8 @@ class View extends Writer {
     function renderTextArea($label, $name) {
 
         $contentKeyArr = [
-            'fieldName' => ucwords( str_replace( '_', ' ', snake_case( $name ) ) ),
-            'fieldLabel' => $label
+            'fieldName' => $this->makeFieldName( $name ),
+            'fieldLabel' => $this->makeLabel( $name )
         ];
 
         $this->addFormContent .= $this->replaceVarNReturnContent( $this->textAreaTemplate, $contentKeyArr );
@@ -279,7 +288,7 @@ class View extends Writer {
 
     function renderRadio( $name, $type ) {
 
-        $label = ucwords( str_replace( '_', ' ', snake_case( $name ) ) );
+        $label = $this->makeLabel( $name );
 
         $radios = '';
 
@@ -292,7 +301,7 @@ class View extends Writer {
             $contentKeyArr = [
                 'fieldName' => snake_case( $option ),
                 'value' => $option,
-                'fieldLabel' => ucwords( str_replace( '_', ' ', snake_case( $option ) ) )
+                'fieldLabel' => $this->makeLabel( $option )
             ];
 
             $radios .= $this->replaceVarNReturnContent( $this->radioTemplate, $contentKeyArr );
@@ -310,7 +319,7 @@ class View extends Writer {
 
     function renderCheckBox( $name, $type ) {
 
-        $label = ucwords( str_replace( '_', ' ', snake_case( $name ) ) );
+        $label = $this->makeLabel( $name );
 
         $radios = '';
 
@@ -321,9 +330,9 @@ class View extends Writer {
         foreach( $options as $option ) {
 
             $contentKeyArr = [
-                'fieldName' => snake_case( $name ),
+                'fieldName' => $this->makeFieldName( $name ),
                 'value' => $option,
-                'fieldLabel' => ucwords( str_replace( '_', ' ', snake_case( $option ) ) )
+                'fieldLabel' => $this->makeLabel( $option )
             ];
 
             $radios .= $this->replaceVarNReturnContent( $this->checkBoxTemplate, $contentKeyArr );
@@ -352,10 +361,10 @@ class View extends Writer {
             list($frStr, $tableNFk) = explode('-', $foreignStr);
             list($tableName, $fkTableField) = explode('.', $tableNFk);
             $contentArr = [
-                'fieldName' => ucwords( str_replace( '_', ' ', snake_case( $fieldName ) ) ),
+                'fieldName' => $this->makeFieldName( $fieldName ),
                 'modelVarPlural' => $tableName,
                 'modelVar' => str_singular( $tableName ),
-                'FieldLabel' => ucwords( str_replace( '_', ' ', snake_case( str_singular( $tableName ) ) ) )
+                'FieldLabel' => $this->makeLabel( $tableName )
             ];
 
             $this->addFormContent .= $this->replaceVarNReturnContent( $this->selectTemplate, $contentArr );
