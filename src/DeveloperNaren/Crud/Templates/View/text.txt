@@ -1,6 +1,6 @@
  <div class="form-group">
     <label for="%%FieldName%%" class="control-label col-lg-4">%%FieldLabel%%</label>
     <div class="col-lg-8">
-          <input type="text" id="%%FieldName%%" placeholder="%%FieldLabel%%" class="form-control">
+          <input type="text" id="%%FieldName%%" placeholder="%%FieldLabel%%" name="%%FieldName%%" class="form-control">
     </div>
   </div>

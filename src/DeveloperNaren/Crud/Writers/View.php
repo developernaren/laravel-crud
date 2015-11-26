@@ -137,19 +137,26 @@ class View extends Writer {
         //ToDo needs to be able to add select, radios and checkbox
         //not sure how to do that
 
+        //we have fields
         foreach ($this->fieldArr as $fieldName => $type) {
 
+            //if there is foreig key, my best guess is we get it from a different table
             if (!empty($this->foreignKeyArr[$fieldName])) {
 
                 $this->renderSelect( $fieldName, $this->foreignKeyArr[$fieldName]);
 
+                //if it an enum it must be a radio, only one should be selected
             } else if( str_contains( $type, 'enumr.')) {
 
                 $this->renderRadio( $fieldName, $type );
 
+                //come to think of it this is wrong, a checkbox usually cannot be deducated from a table
+                //Todo some serious thinking :D
             } else if( str_contains( $type, 'enumc.') ) {
 
                 $this->renderCheckBox( $fieldName, $type );
+
+                //everything else is either a text or textarea :D
             } else {
 
                 switch (trim($type)) {
@@ -199,13 +206,24 @@ class View extends Writer {
         }
 
 
+        //render a from where we and stuff the fields
         $this->renderForm();
+        //set the target
         $target = $this->viewTarget . '/' . str_slug($this->modelName) . "/create.blade.php";
+        //set the template
+        //ToDo after all this, there is still something static, get your shit together man!!
         $template = '/vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/CreateView.txt';
+
+        //this is just genius, just saying :P
+        //the things that would be replace in the form
         $contentKeyArr = ['form' => $this->completeForm ];
         $this->write($template, $contentKeyArr, $target);
 
     }
+
+    /**
+     * Renders the form
+     */
 
     function renderForm() {
 
@@ -228,7 +246,7 @@ class View extends Writer {
     function renderText($label, $name) {
 
         $contentKeyArr = [
-            'fieldName' => $name,
+            'fieldName' => ucwords( str_replace( '_', ' ', snake_case( $name ) ) ),
             'fieldLabel' => $label
         ];
 
@@ -245,7 +263,7 @@ class View extends Writer {
     function renderTextArea($label, $name) {
 
         $contentKeyArr = [
-            'fieldName' => $name,
+            'fieldName' => ucwords( str_replace( '_', ' ', snake_case( $name ) ) ),
             'fieldLabel' => $label
         ];
 
@@ -320,12 +338,12 @@ class View extends Writer {
         $this->addFormContent .= $this->replaceVarNReturnContent( $this->checkBoxDivTemplate, $radioDivContentArr );
 
 
-
-
-
     }
 
-
+    /**
+     * @param $fieldName name of the field
+     * @param $foreignStr string of the foreign
+     */
     function renderSelect($fieldName, $foreignStr) {
 
         if (!empty ($this->foreignKeyArr)) {
@@ -334,6 +352,7 @@ class View extends Writer {
             list($frStr, $tableNFk) = explode('-', $foreignStr);
             list($tableName, $fkTableField) = explode('.', $tableNFk);
             $contentArr = [
+                'fieldName' => ucwords( str_replace( '_', ' ', snake_case( $fieldName ) ) ),
                 'modelVarPlural' => $tableName,
                 'modelVar' => str_singular( $tableName ),
                 'FieldLabel' => ucwords( str_replace( '_', ' ', snake_case( str_singular( $tableName ) ) ) )
@@ -390,9 +409,6 @@ class View extends Writer {
         $this->textAreaTemplate  = Config::get( 'crud.textarea_template' );;
     }
 
-    /**
-     * @param mixed $viewTarget
-     */
     public function setViewTarget() {
         $this->viewTarget = Config::get('crud.view_target');
     }

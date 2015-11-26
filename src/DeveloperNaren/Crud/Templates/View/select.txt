@@ -1,7 +1,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">%%FieldLabel%%</label>
     <div class="col-lg-8">
-      <select class="form-control" name="%%FieldLabel%%">
+      <select class="form-control" name="%%FieldName%%">
       @foreach( $%%ModelVarPlural%% as $%%ModelVar%%)
            <option value="{{ $%%ModelVar%%->id }}">{{ $%%ModelVar%%->name }}</option>
        @endforeach
