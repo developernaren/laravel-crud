@@ -319,6 +319,10 @@ class View extends Writer {
 
         $this->addFormContent .= $this->replaceVarNReturnContent( $this->checkBoxDivTemplate, $radioDivContentArr );
 
+
+
+
+
     }
 
 
