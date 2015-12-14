@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Mockery\CountValidator\Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use Illuminate\Container\Container;
 
 /**
  * Class Writer
@@ -86,14 +87,28 @@ class Writer
 
     protected $foreignKeyArr;
 
+    /*
+     * Var for current namespace
+     *  used on setCrudSlug($arg);  method
+     */
+    protected $currentAppNamespace;
 
     /**
      * Parses the human readable field string to the machine readable(lol) array
      * @param $fields
      * sets fields array
      */
-    function parseFields( $fields ) {
 
+
+
+
+
+
+
+
+
+    function parseFields( $fields ) {
+        $this->CurrentAppNamespace = Container::getInstance()->getNamespace();
         $allFields = explode(',', $fields );
 
         $allFieldArr = [];
@@ -137,7 +152,7 @@ class Writer
      *
      */
     function write( $file, $contentKeyArr, $target ) {
-
+        $this->currentAppNamespace = "1sdasd";
         $newContent = $this->replaceVarNReturnContent( $file, $contentKeyArr );
         $this->writeDirectory( $target );
         $this->openAndWriteActualFile( $newContent, $target );
@@ -221,7 +236,7 @@ class Writer
      * supposed to be folder name
      */
     public function setCrudSlug($crudSlug) {
-
+        $this->currentAppNamespace = Container::getInstance()->getNamespace();
         $this->crudSlug = $crudSlug;
     }
 
@@ -231,6 +246,7 @@ class Writer
     public function setNameSpace() {
 
         $this->namespace = Config::get('crud.namespace_root');
+        $this->currentNamespace = 'sdfsdf';
     }
 
     //you know the rest..don't act like you don't know it.. Peace

@@ -1,14 +1,14 @@
 <?php
 
-namespace app\Modules\Product\Http\Controllers;
+%%CurrentAppNamespace%%Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
+use %%CurrentAppNamespace%%Http\Controllers\Controller;
 use %%FormRequestWNameSpace%%;
-use App\Libraries\Facades\InputHelper;
+use %%CurrentAppNamespace%%Libraries\Facades\InputHelper;
 use %%ModelWNameSpace%%;
-use App\Models\Category;
-use App\Models\SubCategory;
+use %%CurrentAppNamespace%%Models\Category;
+use %%CurrentAppNamespace%%Models\SubCategory;
 use Illuminate\Support\Facades\Redirect;
 use \Input;
 
