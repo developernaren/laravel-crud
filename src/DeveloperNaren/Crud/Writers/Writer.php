@@ -152,7 +152,7 @@ class Writer
      *
      */
     function write( $file, $contentKeyArr, $target ) {
-        $this->currentAppNamespace = "1sdasd";
+
         $newContent = $this->replaceVarNReturnContent( $file, $contentKeyArr );
         $this->writeDirectory( $target );
         $this->openAndWriteActualFile( $newContent, $target );

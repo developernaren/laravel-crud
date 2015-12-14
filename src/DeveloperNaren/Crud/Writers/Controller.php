@@ -34,8 +34,10 @@ class Controller extends Writer
 
     /**
      * @param string $controllerContent
+     * @var type handles the controller type whether it is explicit or implicit
+     * @var routeName handles the name for the route to be made along with the controller
      */
-    function __construct( $entity ) {
+    function __construct( $entity,$type,$routeName ) {
 
         //everything here is a setter so you know what's up.
 
@@ -49,8 +51,10 @@ class Controller extends Writer
         $this->setFormRequests();
         $this->setStoreRoute();
         $this->setListRoute();
-        $this->setTemplate();
+        $this->setTemplate($type);
         $this->setBaseController();
+        $this->setRouteName();
+
 
         //asigning variables to replace
         $objectVars = get_object_vars( $this );
@@ -82,6 +86,15 @@ class Controller extends Writer
 
 
 
+    /*
+     * Set the RouteName
+     */
+
+    private function setRouteName($RouteName) {
+            /*
+             * Createing the route for
+             */
+    }
 
 
 
