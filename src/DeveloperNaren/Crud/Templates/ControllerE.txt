@@ -1,0 +1,68 @@
+<?php
+
+namespace %%CurrentAppNamespace%%Http\Controllers;
+
+
+use %%CurrentAppNamespace%%Http\Controllers\Controller;
+use %%FormRequestWNameSpace%%;
+use %%CurrentAppNamespace%%Libraries\Facades\InputHelper;
+use %%ModelWNameSpace%%;
+use %%CurrentAppNamespace%%Models\Category;
+use %%CurrentAppNamespace%%Models\SubCategory;
+use Illuminate\Support\Facades\Redirect;
+use \Input;
+
+class %%ModelName%%Controller extends %%BaseController%% {
+
+
+    function index() {
+
+		$this->data['%%ModelVarPlural%%'] = %%ModelName%%::paginate(15);
+		return view( '%%CrudSlug%%.list', $this->data);
+
+    }
+
+    function create() {
+
+        $fieldArr = with(new %%ModelName%%)->getFillable();
+        $this->data = InputHelper::setFields($fieldArr, [], $this->data, Input::old());
+        $this->data['route'] = route('save%%StoreRoute%%');
+        return view( '%%CrudSlug%%.add', $this->data);
+    }
+
+    function edit(%%ModelVar%%) {
+
+        $fieldArr = with(new %%ModelName%%)->getFillable();
+        $this->data['route'] = route('updateProduct', %%ModelVar%%->id);
+        $this->data = InputHelper::setFields($fieldArr, %%ModelVar%%, $this->data, Input::old());
+        return view( '%%CrudSlug%%.add', $this->data);
+    }
+
+   function show($id)
+        {
+            //
+        }
+
+
+    function update(%%FormRequest%% $request, %%ModelVar%%) {
+
+        %%ModelVar%%->update($request->all());
+        return Redirect::route('%%ListRoute%%');
+    }
+
+
+    function store(%%FormRequest%% $request) {
+
+        %%ModelName%%::create($request->all());
+        return Redirect::route('%%ListRoute%%');
+    }
+
+
+    function destroy( %%ModelVar%% ) {
+
+		%%ModelVar%%->delete();
+    }
+
+
+
+}

@@ -5,6 +5,7 @@ namespace DeveloperNaren\Crud\Writers;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use File;
 
 
 /**
@@ -54,14 +55,14 @@ class Controller extends Writer
         $this->setTemplate($type);
         $this->setBaseController();
         $this->setCurrentNameSpace();
-//        $this->setRouteName();
+       $this->setRouteName($routeName,$type,$entity);
 
 
         //asigning variables to replace
         $objectVars = get_object_vars( $this );
 
         //assigning targer
-        $target = 'app/Http/Controllers/' . $this->modelName . "Controller.php";
+        $target = 'app/Http/Controllers/' . $this->modelName . 'Controller.php';
         //write the file
         //ToDo the template file and the target should be read from config file
         $this->write( $this->template, $objectVars, $target );
@@ -72,14 +73,24 @@ class Controller extends Writer
      * set the template
      */
 
-    private function setTemplate() {
+    private function setTemplate($type) {
 
         //Oh I did read the template from config ..good
         //but need to be able pass the key of the confib because can be multiple file write in single class call
         $template = Config::get( 'crud.controller_template' );
 
-        if ( empty( $template ) ){
-            $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/Controller.txt';
+//        checking if its implicit or explicit controller
+
+        if($type == "i") {
+            if (empty($template)) {
+                $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/ControllerI.txt';
+            }
+
+
+
+        } elseif($type == "e") {
+            $template = 'vendor/developernaren/laravel-crud/src/DeveloperNaren/Crud/Templates/ControllerE.txt';
+
         }
 
         $this->template = $template;
@@ -90,12 +101,29 @@ class Controller extends Writer
     /*
      * Set the RouteName
      */
+    private function setRouteName($routeName,$type,$entity) {
+//        Path to the routes.php
+        $route_path = app_path('Http/routes.php');
 
-//    private function setRouteName($RouteName) {
-//            /*
-//             * Createing the route for
-//             */
-//    }
+//        Open routes.php
+        $open_route_path = fopen($route_path,'a');
+
+        if($type == 'i') {
+            $append_code = 'Route::controller('."$routeName".','."$entity".');';
+
+        } elseif($type == 'e') {
+
+            $append_code = 'Route::resource('."$routeName".','."$entity".');';
+        }
+
+//        writing to the routes.php file
+
+        fwrite($open_route_path,$append_code);
+        fclose($open_route_path);
+
+
+
+    }
 
 
 
