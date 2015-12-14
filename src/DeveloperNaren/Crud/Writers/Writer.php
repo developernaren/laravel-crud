@@ -108,7 +108,7 @@ class Writer
 
 
     function parseFields( $fields ) {
-        $this->CurrentAppNamespace = Container::getInstance()->getNamespace();
+
         $allFields = explode(',', $fields );
 
         $allFieldArr = [];
@@ -236,7 +236,7 @@ class Writer
      * supposed to be folder name
      */
     public function setCrudSlug($crudSlug) {
-        $this->currentAppNamespace = Container::getInstance()->getNamespace();
+
         $this->crudSlug = $crudSlug;
     }
 
@@ -246,7 +246,7 @@ class Writer
     public function setNameSpace() {
 
         $this->namespace = Config::get('crud.namespace_root');
-        $this->currentNamespace = 'sdfsdf';
+
     }
 
     //you know the rest..don't act like you don't know it.. Peace
@@ -285,6 +285,9 @@ class Writer
         $this->modelVarPlural = str_plural( $this->modelVar );
     }
 
+    function setCurrentNameSpace() {
+        $this->currentAppNamespace = Container::getInstance()->getNamespace();
+    }
 
 
 }

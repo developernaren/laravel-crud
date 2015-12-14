@@ -53,7 +53,8 @@ class Controller extends Writer
         $this->setListRoute();
         $this->setTemplate($type);
         $this->setBaseController();
-        $this->setRouteName();
+        $this->setCurrentNameSpace();
+//        $this->setRouteName();
 
 
         //asigning variables to replace
@@ -90,11 +91,11 @@ class Controller extends Writer
      * Set the RouteName
      */
 
-    private function setRouteName($RouteName) {
-            /*
-             * Createing the route for
-             */
-    }
+//    private function setRouteName($RouteName) {
+//            /*
+//             * Createing the route for
+//             */
+//    }
 
 
 

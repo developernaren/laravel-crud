@@ -20,7 +20,7 @@ class CreateControllerCommand extends CrudCommand
      *
      * @var string
      */
-    protected $signature = 'crud:controller {entity} {type}';
+    protected $signature = 'crud:controller {entity} {type} {routeName}';
 
     /**
      * The console command description.
@@ -41,12 +41,13 @@ class CreateControllerCommand extends CrudCommand
 
         $this->crudName =$this->argument( "entity");
         $this->type =$this->argument( "type");
+        $this->routeName =$this->argument( "routeName");
 
-        
+
         //checking whether to create implicit or explicit controllers
 
 
-        new Controller( $this->crudName );
+        new Controller( $this->crudName,$this->type,$this->routeName);
     }
 
 }
