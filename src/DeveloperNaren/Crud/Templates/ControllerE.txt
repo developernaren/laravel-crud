@@ -1,6 +1,6 @@
 <?php
 
-%%CurrentAppNamespace%%Http\Controllers;
+namespace %%CurrentAppNamespace%%Http\Controllers;
 
 
 use %%CurrentAppNamespace%%Http\Controllers\Controller;
@@ -22,7 +22,7 @@ class %%ModelName%%Controller extends %%BaseController%% {
 
     }
 
-    function add() {
+    function create() {
 
         $fieldArr = with(new %%ModelName%%)->getFillable();
         $this->data = InputHelper::setFields($fieldArr, [], $this->data, Input::old());
@@ -37,6 +37,11 @@ class %%ModelName%%Controller extends %%BaseController%% {
         $this->data = InputHelper::setFields($fieldArr, %%ModelVar%%, $this->data, Input::old());
         return view( '%%CrudSlug%%.add', $this->data);
     }
+
+   function show($id)
+        {
+            //
+        }
 
 
     function update(%%FormRequest%% $request, %%ModelVar%%) {
@@ -53,7 +58,7 @@ class %%ModelName%%Controller extends %%BaseController%% {
     }
 
 
-    function delete( %%ModelVar%% ) {
+    function destroy( %%ModelVar%% ) {
 
 		%%ModelVar%%->delete();
     }

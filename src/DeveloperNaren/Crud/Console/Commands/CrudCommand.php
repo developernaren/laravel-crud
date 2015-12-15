@@ -51,7 +51,7 @@ class CrudCommand extends Command
         $fieldsString = $this->ask( "Fields string: in format <field>:<type> separated by comma(,)" );
 
         //calling command to create controller
-        $this->call( 'crud:controller',  [ 'entity' => $entity ]  );
+        $this->call( 'crud:controller',  [ 'entity' => $entity,'type' =>$type ]  );
         //ToDo I think we should create the route in this command
 
         //Calling command to create model for the given entity

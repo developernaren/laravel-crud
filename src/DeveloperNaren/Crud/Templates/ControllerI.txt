@@ -1,6 +1,6 @@
 <?php
 
-%%CurrentAppNamespace%%Http\Controllers;
+namespace %%CurrentAppNamespace%%Http\Controllers;
 
 
 use %%CurrentAppNamespace%%Http\Controllers\Controller;
@@ -15,14 +15,14 @@ use \Input;
 class %%ModelName%%Controller extends %%BaseController%% {
 
 
-    function index() {
+    function getIndex() {
 
 		$this->data['%%ModelVarPlural%%'] = %%ModelName%%::paginate(15);
 		return view( '%%CrudSlug%%.list', $this->data);
 
     }
 
-    function add() {
+    function postAdd() {
 
         $fieldArr = with(new %%ModelName%%)->getFillable();
         $this->data = InputHelper::setFields($fieldArr, [], $this->data, Input::old());
@@ -30,7 +30,7 @@ class %%ModelName%%Controller extends %%BaseController%% {
         return view( '%%CrudSlug%%.add', $this->data);
     }
 
-    function edit(%%ModelVar%%) {
+    function postEdit(%%ModelVar%%) {
 
         $fieldArr = with(new %%ModelName%%)->getFillable();
         $this->data['route'] = route('updateProduct', %%ModelVar%%->id);
@@ -39,14 +39,14 @@ class %%ModelName%%Controller extends %%BaseController%% {
     }
 
 
-    function update(%%FormRequest%% $request, %%ModelVar%%) {
+    function postUpdate(%%FormRequest%% $request, %%ModelVar%%) {
 
         %%ModelVar%%->update($request->all());
         return Redirect::route('%%ListRoute%%');
     }
 
 
-    function store(%%FormRequest%% $request) {
+    function postStore(%%FormRequest%% $request) {
 
         %%ModelName%%::create($request->all());
         return Redirect::route('%%ListRoute%%');

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Mockery\CountValidator\Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use Illuminate\Container\Container;
 
 /**
  * Class Writer
@@ -86,12 +87,26 @@ class Writer
 
     protected $foreignKeyArr;
 
+    /*
+     * Var for current namespace
+     *  used on setCrudSlug($arg);  method
+     */
+    protected $currentAppNamespace;
 
     /**
      * Parses the human readable field string to the machine readable(lol) array
      * @param $fields
      * sets fields array
      */
+
+
+
+
+
+
+
+
+
     function parseFields( $fields ) {
 
         $allFields = explode(',', $fields );
@@ -231,6 +246,7 @@ class Writer
     public function setNameSpace() {
 
         $this->namespace = Config::get('crud.namespace_root');
+
     }
 
     //you know the rest..don't act like you don't know it.. Peace
@@ -269,6 +285,9 @@ class Writer
         $this->modelVarPlural = str_plural( $this->modelVar );
     }
 
+    function setCurrentNameSpace() {
+        $this->currentAppNamespace = Container::getInstance()->getNamespace();
+    }
 
 
 }
